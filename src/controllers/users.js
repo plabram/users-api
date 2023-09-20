@@ -31,7 +31,6 @@ const getUserById = async (req,res,next) => {
 const createUser = async (req, res,next) => {
 try
   {
-    console.log("hello")
     const userObject = {...req.body}
 const newUser = await createUserInDb(userObject)
   res.status(201).json({data: newUser})}

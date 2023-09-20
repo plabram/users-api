@@ -7,8 +7,8 @@ const { setError } = require("./config/error")
 const app = express()
 
 const limiter = rateLimit({
-	windowMs: 5 * 60 * 1000, // 5 minutes
-	max: 100, // Limit each IP to 100 requests per `window`
+	windowMs: 3 * 60 * 1000, // 3 minutes
+	max: 50, // Limit each IP to 50 requests per `window`
 	standardHeaders: false,
 	legacyHeaders: false,
 })
