@@ -9,6 +9,7 @@ const {
 } = require("../repositories/users")
 const {setError} = require("../config/error")
 const { hashPassword, verifyPassword } = require("../config/password")
+const { signToken } = require("../config/jwt")
 
 const getAllUsers = async (req,res,next)=> {
 try
@@ -80,6 +81,7 @@ const deleteUser = async (req,res,next)=>{
   const loginUser = async (req, res)=>{
     const {email, password} = req.body
       const user = await getUserByEmailFromDb(email)
+      console.log(user)
       if (!user) {
         res.status(401).json({data: "user doesn't exist"})
       return
