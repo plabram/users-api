@@ -64,13 +64,15 @@ const deleteUser = async (req,res,next)=>{
   const registerUser = async (req,res)=>{
     try {
     const {email,password} = req.body
-    console.log(typeof(req.body))
-    console.log(typeof(email))
-  const hash = await hashPassword(password)
+
+    if (password.length >= 6) 
+  {const hash = await hashPassword(password)
   
   
   const newUser = await createUserInDb({email, password: hash})
-  res.status(201).json({data: newUser})
+  res.status(201).json({data: newUser})} else {
+    res.status(400).json({data: "Password must be at least 6 characters"})
+  }
   
     } catch (err) {
       console.log("Error creating user", err)
