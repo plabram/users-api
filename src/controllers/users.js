@@ -31,16 +31,16 @@ const getUserById = async (req,res,next) => {
       }
 }
 
-const createUser = async (req, res,next) => {
-try
-  {
-    const userObject = {...req.body}
-const newUser = await createUserInDb(userObject)
-  res.status(201).json({data: newUser})}
-  catch {
-    return next(setError(400, "Can't create user"))
-  }
-}
+// const createUser = async (req, res,next) => {
+// try
+//   {
+//     const userObject = {...req.body}
+// const newUser = await createUserInDb(userObject)
+//   res.status(201).json({data: newUser})}
+//   catch {
+//     return next(setError(400, "Can't create user"))
+//   }
+// }
 
 const updateUserById = async (req, res,next) => {
   try {const {id} = req.params
@@ -114,7 +114,7 @@ const deleteUser = async (req,res,next)=>{
 module.exports = {
   getAllUsers, 
   getUserById, 
-  createUser,
+  // createUser,
   updateUserById,
   deleteUser,
   registerUser,
