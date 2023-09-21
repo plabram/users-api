@@ -13,10 +13,23 @@ const getUserByIdFromDb = async (id) => {
       return user
 }
 
+const getUserByEmailFromDb = async (email) => {
+  const user = await User.findOne({email}).lean()
+  return user
+}
+
 const createUserInDb = async (payload) => {
+  const user = await User.findOne({email: payload.email})
+  
+  if (user) {
+    throw new Error("User already exists with the same email")
+  }
+  
   const newUser = new User(payload)
   await newUser.save()
-  return newUser
+
+  const {password, ...rest} = newUser.toObject()
+  return rest
 }
 
 const updateUserInDb = async (id, payload) => {
@@ -31,6 +44,7 @@ const deleteUserFromDb = async (id) => {
 module.exports = {
   getAllUsersFromDb,
   getUserByIdFromDb,
+  getUserByEmailFromDb,
   createUserInDb,
   updateUserInDb,
   deleteUserFromDb

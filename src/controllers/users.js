@@ -4,9 +4,11 @@ const {
   getUserByIdFromDb, 
   createUserInDb,
   updateUserInDb,
-  deleteUserFromDb
+  deleteUserFromDb,
+  getUserByEmailFromDb
 } = require("../repositories/users")
 const {setError} = require("../config/error")
+const { hashPassword, verifyPassword } = require("../config/password")
 
 const getAllUsers = async (req,res,next)=> {
 try
@@ -58,10 +60,60 @@ const deleteUser = async (req,res,next)=>{
   }
   }
 
+  const registerUser = async (req,res)=>{
+    try {
+    const {email,password} = req.body
+    console.log(typeof(req.body))
+    console.log(typeof(email))
+  const hash = await hashPassword(password)
+  
+  
+  const newUser = await createUserInDb({email, password: hash})
+  res.status(201).json({data: newUser})
+  
+    } catch (err) {
+      console.log("Error creating user", err)
+      res.status(400).json({data: "Error registering user"})
+    }
+  }
+  
+  const loginUser = async (req, res)=>{
+    const {email, password} = req.body
+      const user = await getUserByEmailFromDb(email)
+      if (!user) {
+        res.status(401).json({data: "user doesn't exist"})
+      return
+      }
+      const isValidPassword = await verifyPassword(password, user.password)
+      if (!isValidPassword) {
+        res.status(401).json({data: "Incorrect email or password"})
+        return
+      }
+      const token = signToken({id: user._id })
+      const {password: unusedPassword, ...restUser} = user
+      console.log("signed in!")
+      res.status(200).json({data: {
+        token, 
+        user: restUser
+      }})
+    
+    }
+  
+  const getUser = async (req, res) => {
+    const {id } = req.user
+  const user = await getUserByIdFromDb(id)
+  res.status(200).json({data: user})
+    
+  }
+
+
 module.exports = {
   getAllUsers, 
   getUserById, 
   createUser,
   updateUserById,
-  deleteUser
+  deleteUser,
+  registerUser,
+  loginUser,
+  getUser
 }
