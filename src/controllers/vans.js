@@ -53,7 +53,8 @@ catch {
 const deleteVan = async (req,res,next)=>{
   try
   {const {id} = req.params
-  await Booking.deleteMany({_van: id})
+  await deleteAllBookingsFromDb(id)
+  // await Booking.deleteMany({_van: id})
   await deleteVanFromDb(id)
   res.status(200).json({data: "Van deleted"})}
   catch {

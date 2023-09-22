@@ -28,10 +28,15 @@ const deleteBookingFromDb = async (id) => {
   await Booking.deleteOne({_id: id})
 }
 
+const deleteAllBookingsFromDb = async (vanid) => {
+  await Booking.deleteMany({_van: vanid})
+}
+
 module.exports = {
   getAllBookingsFromDb,
   getBookingByIdFromDb,
   createBookingInDb,
   updateBookingInDb,
-  deleteBookingFromDb
+  deleteBookingFromDb,
+  deleteAllBookingsFromDb
 }
