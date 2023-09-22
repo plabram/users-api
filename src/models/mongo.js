@@ -7,6 +7,15 @@ const userSchema = new mongoose.Schema({
   password: {type: String, required: true},
 })
 
+const bookingSchema = new mongoose.Schema({
+  customerId: {type: Number, required: true},
+  customerName: {type: String, required: true},
+  startDate: {type: Date, required: true},
+  endDate: {type: Date, required: true},
+  _van: {type: mongoose.Schema.Types.ObjectId, 
+    ref: "Van"}
+})
+
 const vanSchema = new mongoose.Schema({
   title: {type: String, required: true},
   description: {type: String, required: false},
@@ -15,12 +24,7 @@ const vanSchema = new mongoose.Schema({
   sleeps: {type: Number, required: false},
   attributes: {type: [String], required: false},
   drive: {type: String, required: false},
-})
-
-const bookingSchema = new mongoose.Schema({
-  customerId: {type: Number, required: true},
-  customerName: {type: String, required: true},
-  date: {type: Date, required: true},
+  bookings: [bookingSchema]
 })
 
 const User = mongoose.model("User", userSchema)
