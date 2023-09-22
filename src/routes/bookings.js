@@ -3,10 +3,11 @@ const {
   getAllBookings, 
   getBookingById, 
   updateBookingById } = require("../controllers/bookings")
+  const {hasValidAuthJwt} = require("../middleware/auth")
 
 const router = express.Router()
 router.get("/", getAllBookings)
 router.get("/:id", getBookingById)
-router.put("/:id", updateBookingById)
+router.put("/:id", hasValidAuthJwt, updateBookingById)
 
 module.exports = router
