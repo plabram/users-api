@@ -1,4 +1,3 @@
-const { now } = require("mongoose")
 const {
   getAllVansFromDb, 
   getVanByIdFromDb, 
@@ -7,7 +6,6 @@ const {
   deleteVanFromDb
 } = require("../repositories/vans")
 const {
-  deleteBookingFromDb,
   deleteAllBookingsFromDb
 } = require("../repositories/bookings")
 const { Booking } = require("../models/mongo")
@@ -52,33 +50,10 @@ catch {
 }
 }
 
-const addBooking = async (req, res,next) => {
-
-  try
-  {const id = req.params.id
-  const newBooking = new Booking({
-    customerId: req.body.customerId,
-    customerName: req.body.customerName,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    _van: id
-  })
-  await newBooking.save()
-  let van = await getVanByIdFromDb(id)
-van.bookings.push(newBooking)
-const updatedVan = await updateVanInDb(id, van)
-  res.status(201).json(newBooking)
-  console.log(`New booking ${newBooking._id} added to van ${updatedVan._id}`)}
-  catch {
-    return next(setError(400, "Can't add booking"))
-  }
-}
-
 const deleteVan = async (req,res,next)=>{
   try
   {const {id} = req.params
-  await Booking.deleteMany({_van: id}) // alt method
-  // await deleteAllBookingsFromDb(id)
+  await Booking.deleteMany({_van: id})
   await deleteVanFromDb(id)
   res.status(200).json({data: "Van deleted"})}
   catch {
@@ -86,26 +61,10 @@ const deleteVan = async (req,res,next)=>{
   }
   }
 
-  const deleteBooking = async (req,res,next)=>{
-    try
-    {const {id} = req.params
-    const {bookingid} = req.params
-    let van = await getVanByIdFromDb(id)
-    van.bookings.pull(bookingid)
-    await updateVanInDb(id, van)
-    await deleteBookingFromDb(bookingid)
-    res.status(200).json({data: "Booking deleted from van and bookings table"})}
- catch {
-  return next(setError(400, "Can't delete booking"))
- }
-  }
-
 module.exports = {
   getAllVans, 
   getVanById, 
   createVan,
   updateVanById,
-  addBooking,
-  deleteVan,
-  deleteBooking
+  deleteVan
 }
