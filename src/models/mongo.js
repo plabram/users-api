@@ -19,20 +19,26 @@ const vanSchema = new mongoose.Schema({
   bookings: [bookingSchema]
 })
 
+const reducedVanSchema = new mongoose.Schema({
+  title: {type: String, required: true},
+})
+
 const userSchema = new mongoose.Schema({
   name: {type: String, required: false},
   email: {type: String, required: true},
   password: {type: String, required: true},
-  vans: [vanSchema]
+  vans: [reducedVanSchema]
 })
 
 const User = mongoose.model("User", userSchema)
 const Van = mongoose.model("Van", vanSchema)
+const ReducedVan = mongoose.model("ReducedVan", reducedVanSchema)
 const Booking = mongoose.model("Booking", bookingSchema)
 
 
 module.exports = {
   User,
   Van,
+  ReducedVan,
   Booking
 }
