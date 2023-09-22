@@ -39,17 +39,6 @@ catch {
 }
 }
 
-// const deleteVan = async (req,res,next)=>{
-//   try
-//   {const {id} = req.params
-//   await deleteAllBookingsFromDb(id)
-//   await deleteVanFromDb(id)
-//   res.status(200).json({data: "Van deleted"})}
-//   catch {
-//     return next(setError(400, "Can't delete van"))
-//   }
-// }
-
 const addVan = async (req, res,next) => {
 
     try

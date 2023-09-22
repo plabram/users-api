@@ -10,6 +10,9 @@ const {
 const {setError} = require("../config/error")
 const { hashPassword, verifyPassword } = require("../config/password")
 const { signToken } = require("../config/jwt")
+const {deleteAllBookingsFromDb} = require("../repositories/bookings")
+const {deleteVanFromDb} = require("../repositories/vans")
+
 
 const getAllUsers = async (req,res,next)=> {
 try
@@ -43,8 +46,19 @@ catch {
 const deleteUser = async (req,res,next)=>{
   try
   {const {id} = req.params
-  await deleteUserFromDb(id)
-  res.status(200).json({data: "User deleted"})}
+
+const user = await getUserByIdFromDb(id)
+const vans = user.vans.map(van => van._id.toString())
+
+const deleteVansAndBookings = async (vanArray) => {
+for (const van of vanArray) {
+    await deleteAllBookingsFromDb(van)
+  await deleteVanFromDb(van)}
+}
+deleteVansAndBookings(vans)
+  
+await deleteUserFromDb(id)
+  res.status(200).json({data: "User (and associated vans/bookings) deleted"})}
   catch {
     return next(setError(400, "Can't delete user"))
   }
