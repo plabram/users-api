@@ -4,18 +4,18 @@ const {
   getVanById, 
   createVan, 
   updateVanById,
-  addBooking,
-deleteVan,
-deleteBooking 
+deleteVan
 } = require("../controllers/vans")
+const { addBooking, deleteBooking } = require("../controllers/bookings")
+
 
 const router = express.Router()
 router.get("/", getAllVans)
 router.get("/:id", getVanById)
 router.post("/", createVan)
 router.put("/:id", updateVanById)
-router.put("/:id/bookings", addBooking)
 router.delete("/:id", deleteVan)
+router.put("/:id/bookings", addBooking)
 router.delete("/:id/bookings/:bookingid", deleteBooking)
 
 module.exports = router
