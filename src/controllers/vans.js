@@ -5,7 +5,7 @@ const {
   updateVanInDb,
   deleteVanFromDb
 } = require("../repositories/vans")
-const { deleteAllBookingsFromDb } = require("../repositories/bookings")
+ const { deleteAllBookingsFromDb } = require("../repositories/bookings")
 const {getUserByIdFromDb, updateUserInDb} = require("../repositories/users")
 const {setError} = require("../config/error")
 const { Van, ReducedVan } = require("../models/mongo")
@@ -30,16 +30,6 @@ const getVanById = async (req,res,next) => {
       }
 }
 
-// const createVan = async (req, res,next) => {
-// try
-//   {const vanObject = {...req.body}
-// const newVan = await createVanInDb(vanObject)
-//   res.status(201).json({data: newVan})}
-//   catch {
-//     return next(setError(400, "Can't create van"))
-//   }
-// }
-
 const updateVanById = async (req, res,next) => {
   try {const {id} = req.params
 const van = await updateVanInDb(id, req.body)
@@ -49,16 +39,16 @@ catch {
 }
 }
 
-const deleteVan = async (req,res,next)=>{
-  try
-  {const {id} = req.params
-  await deleteAllBookingsFromDb(id)
-  await deleteVanFromDb(id)
-  res.status(200).json({data: "Van deleted"})}
-  catch {
-    return next(setError(400, "Can't delete van"))
-  }
-}
+// const deleteVan = async (req,res,next)=>{
+//   try
+//   {const {id} = req.params
+//   await deleteAllBookingsFromDb(id)
+//   await deleteVanFromDb(id)
+//   res.status(200).json({data: "Van deleted"})}
+//   catch {
+//     return next(setError(400, "Can't delete van"))
+//   }
+// }
 
 const addVan = async (req, res,next) => {
 
@@ -81,6 +71,7 @@ const addVan = async (req, res,next) => {
 
     const newReducedVan = new ReducedVan({
       title: req.body.title,
+      _id: newVan._id
     })
     let user = await getUserByIdFromDb(id)
   user.vans.push(newReducedVan)
@@ -92,19 +83,24 @@ const addVan = async (req, res,next) => {
     }
   }
   
-  // const deleteBooking = async (req,res,next)=>{
-  //   try
-  //   {const {id} = req.params
-  //   const {bookingid} = req.params
-  //   let van = await getVanByIdFromDb(id)
-  //   van.bookings.pull(bookingid)
-  //   await updateVanInDb(id, van)
-  //   await deleteBookingFromDb(bookingid)
-  //   res.status(200).json({data: "Booking deleted from van and bookings table"})}
-  // catch {
-  // return next(setError(400, "Can't delete booking"))
-  // }
-  // }
+  const deleteVan = async (req,res,next)=>{
+    try
+    {const {id} = req.params
+    const {vanid} = req.params
+    console.log(id, vanid)
+    // remove van from user
+    let user = await getUserByIdFromDb(id)
+    user.vans.pull(vanid)
+    await updateUserInDb(id, user)
+    // remove associated bookings from bookings table
+    await deleteAllBookingsFromDb(vanid)
+    // remove van from db
+    await deleteVanFromDb(vanid)
+    res.status(200).json({data: "Van deleted from user and vans table. Associated bookings deleted from bookings table."})}
+  catch {
+  return next(setError(400, "Can't delete van"))
+  }
+  }
 
 module.exports = {
   getAllVans, 

@@ -21,6 +21,8 @@ const vanSchema = new mongoose.Schema({
 
 const reducedVanSchema = new mongoose.Schema({
   title: {type: String, required: true},
+  _id: {type: mongoose.Schema.Types.ObjectId, 
+    ref: "Van"}
 })
 
 const userSchema = new mongoose.Schema({
