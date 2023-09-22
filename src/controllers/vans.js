@@ -76,7 +76,8 @@ const addVan = async (req, res,next) => {
       bookings: req.body.bookings,
       _user: id
     })
-    await newVan.save()
+    // await newVan.save()
+    await createVanInDb(newVan)
 
     const newReducedVan = new ReducedVan({
       title: req.body.title,

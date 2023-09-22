@@ -14,7 +14,6 @@ const getVanByIdFromDb = async (id) => {
 }
 
 const createVanInDb = async (payload) => {
-  console.log(payload)
   const newVan = new Van(payload)
   await newVan.save()
   return newVan
