@@ -1,4 +1,4 @@
-const { now } = require("mongoose")
+// const { now } = require("mongoose")
 const {
   getAllUsersFromDb, 
   getUserByIdFromDb, 
@@ -85,7 +85,7 @@ await deleteUserFromDb(id)
   }
   
   const loginUser = async (req, res)=>{
-    const {email, password} = req.body
+    try {const {email, password} = req.body
       const user = await getUserByEmailFromDb(email)
       console.log(user)
       if (!user) {
@@ -103,7 +103,9 @@ await deleteUserFromDb(id)
       res.status(200).json({data: {
         token, 
         user: restUser
-      }})
+      }})} catch (error) {
+        return next(setError(400, "Can't log in user"))
+      }
     
     }
   
@@ -115,7 +117,8 @@ await deleteUserFromDb(id)
   }
 
   const updateUserAvatar = async (req,res,next)=>{
-    const {path} = req.file
+try
+    {const {path} = req.file
     const {id} = req.user
     const user = await getUserByIdFromDb(id)
     if (!user.avatar) {
@@ -123,7 +126,10 @@ await deleteUserFromDb(id)
   res.status(201).json({data: path})
 } else {
         res.status(400).json({data: "User already has an avatar"})
+      }} catch (error) {
+        return next(setError(400, "Can't update user's avatar"))
       }
+
     } 
 
 

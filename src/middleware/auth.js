@@ -19,6 +19,7 @@ const checkUser = (req, res, next) => {
 const requestedId = req.params.id
 const user = req.user
 if (user && user.id === requestedId) {
+  console.log("User has permission to access this resource 😎")
   next();
 } else {
   res.status(403).send('User does not have permission to access this resource'); // User's UUID does not match the requested UUID
@@ -29,8 +30,8 @@ const checkUserByVan = async (req, res, next) => {
 const requestedVanId = req.params.id
 const user = req.user
 const owner = await getUserByVanIdFromDb(requestedVanId)
-console.log(owner)
 if (user && user.id === owner) {
+  console.log("User has permission to access this resource 😎")
   next();
 } else {
   res.status(403).send('User does not have permission to access this resource'); // User's UUID does not match the requested UUID

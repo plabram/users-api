@@ -71,9 +71,6 @@ return next(setError(400, "Can't delete booking"))
 const updateBookingById = async (req, res,next) => {
   try
   {const {bookingid} = req.params
-  // let dateUpdate = req.body
-  // dateUpdate.lastUpdated = new Date
-  // console.log(dateUpdate)
 const booking = await updateBookingInDb(bookingid, req.body)
 res.status(200).json({data: booking})}
 catch {

@@ -15,7 +15,6 @@ const getUserByIdFromDb = async (id) => {
 }
 
 const getUserByVanIdFromDb = async (vanId) => {
-    try {
 const idToObject = new ObjectId(vanId)
 
   const user = await User.find({
@@ -26,10 +25,7 @@ const idToObject = new ObjectId(vanId)
   }
   const userId = user[0]._id.toString();
   return userId;
- } catch (error) {
-  console.error('Error fetching User ID by Van ID:', error);
-  throw error;
- }
+
 }
 
 const getUserByEmailFromDb = async (email) => {

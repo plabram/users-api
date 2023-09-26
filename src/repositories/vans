@@ -29,7 +29,7 @@ const deleteVanFromDb = async (id) => {
 }
 
 const updateVanImagesInDb = async (id, path) => {
-  await Van.updateOne({_id:id}, {images: path})
+  await Van.updateOne({_id:id}, { $push: { images: path }}) 
  }
 
 module.exports = {

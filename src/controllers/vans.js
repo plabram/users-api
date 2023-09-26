@@ -48,7 +48,7 @@ const addVan = async (req, res,next) => {
     const newVan = new Van({
       title: req.body.title,
       description: req.body.description,
-      photos: req.body.photos,
+      images: req.body.images,
       price: req.body.price,
       sleeps: req.body.sleeps,
       attributes: req.body.attributes,
@@ -56,7 +56,6 @@ const addVan = async (req, res,next) => {
       bookings: req.body.bookings,
       _user: id
     })
-    // await newVan.save()
     await createVanInDb(newVan)
 
     const newReducedVan = new ReducedVan({
@@ -93,11 +92,14 @@ const addVan = async (req, res,next) => {
   }
 
   const updateVanImages = async (req,res,next)=>{
-    const {path} = req.file
+try {const {path} = req.file
     const {id} = req.params
     await getVanByIdFromDb(id)
     await updateVanImagesInDb(id,path)
-  res.status(201).json({data: path})
+  res.status(201).json({data: path})} catch (error) {
+    return next(setError(400, "Can't update van's images"))
+  }
+
     } 
 
 module.exports = {
