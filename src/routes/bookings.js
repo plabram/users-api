@@ -8,6 +8,5 @@ const {
 const router = express.Router()
 router.get("/", getAllBookings)
 router.get("/:id", getBookingById)
-router.put("/:id", hasValidAuthJwt, updateBookingById)
 
 module.exports = router
