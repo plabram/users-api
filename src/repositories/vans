@@ -1,7 +1,7 @@
 const {Van} = require("../models/mongo")
 
 const getAllVansFromDb = async (filter) => {
-  const titleFilterOptions = {
+  const nameFilterOptions = {
     name: {$regex: new RegExp(filter, "i")} 
   }
   const vans = await Van.find(filter ? nameFilterOptions : {})
