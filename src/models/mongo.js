@@ -11,7 +11,7 @@ const bookingSchema = new mongoose.Schema({
 const vanSchema = new mongoose.Schema({
   title: {type: String, required: true},
   description: {type: String, required: false},
-  photos: {type: [String], required: false},
+  images: {type: [String], required: false},
   price: {type: Number, required: false},
   sleeps: {type: Number, required: false},
   attributes: {type: [String], required: false},

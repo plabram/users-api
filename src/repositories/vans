@@ -28,10 +28,15 @@ const deleteVanFromDb = async (id) => {
   await Van.deleteOne({_id: id})
 }
 
+const updateVanImagesInDb = async (id, path) => {
+  await Van.updateOne({_id:id}, {images: path})
+ }
+
 module.exports = {
   getAllVansFromDb,
   getVanByIdFromDb,
   createVanInDb,
   updateVanInDb,
-  deleteVanFromDb
+  deleteVanFromDb,
+  updateVanImagesInDb
 }

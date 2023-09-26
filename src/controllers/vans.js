@@ -9,6 +9,7 @@ const {
 const {getUserByIdFromDb, updateUserInDb} = require("../repositories/users")
 const {setError} = require("../config/error")
 const { Van, ReducedVan } = require("../models/mongo")
+const { updateVanImagesInDb } = require("../repositories/vans")
 
 const getAllVans = async (req,res,next)=> {
 try
@@ -91,10 +92,19 @@ const addVan = async (req, res,next) => {
   }
   }
 
+  const updateVanImages = async (req,res,next)=>{
+    const {path} = req.file
+    const {id} = req.params
+    await getVanByIdFromDb(id)
+    await updateVanImagesInDb(id,path)
+  res.status(201).json({data: path})
+    } 
+
 module.exports = {
   getAllVans, 
   getVanById, 
   addVan,
   updateVanById,
-  deleteVan
+  deleteVan,
+  updateVanImages
 }
