@@ -5,7 +5,8 @@ const {
   createUserInDb,
   updateUserInDb,
   deleteUserFromDb,
-  getUserByEmailFromDb
+  getUserByEmailFromDb,
+  updateUserAvatarInDb
 } = require("../repositories/users")
 const {setError} = require("../config/error")
 const { hashPassword, verifyPassword } = require("../config/password")
@@ -113,6 +114,18 @@ await deleteUserFromDb(id)
     
   }
 
+  const updateUserAvatar = async (req,res,next)=>{
+    const {path} = req.file
+    const {id} = req.user
+    const user = await getUserByIdFromDb(id)
+    if (!user.avatar) {
+    await updateUserAvatarInDb(id,path)
+  res.status(201).json({data: path})
+} else {
+        res.status(400).json({data: "User already has an avatar"})
+      }
+    } 
+
 
 module.exports = {
   getAllUsers, 
@@ -121,5 +134,6 @@ module.exports = {
   deleteUser,
   registerUser,
   loginUser,
-  getUser
+  getUser,
+  updateUserAvatar
 }

@@ -41,11 +41,16 @@ const deleteUserFromDb = async (id) => {
   await User.deleteOne({_id: id})
 }
 
+const updateUserAvatarInDb = async (id, path) => {
+  await User.updateOne({_id:id}, {avatar: path})
+ }
+
 module.exports = {
   getAllUsersFromDb,
   getUserByIdFromDb,
   getUserByEmailFromDb,
   createUserInDb,
   updateUserInDb,
-  deleteUserFromDb
+  deleteUserFromDb,
+  updateUserAvatarInDb
 }
