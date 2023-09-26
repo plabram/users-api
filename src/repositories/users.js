@@ -1,7 +1,8 @@
-const {User} = require("../models/mongo")
+const {User, Van} = require("../models/mongo")
+const ObjectId = require("mongodb").ObjectId
 
 const getAllUsersFromDb = async (filter) => {
-  const titleFilterOptions = {
+  const nameFilterOptions = {
     name: {$regex: new RegExp(filter, "i")} 
   }
   const users = await User.find(filter ? nameFilterOptions : {})
@@ -11,6 +12,24 @@ const getAllUsersFromDb = async (filter) => {
 const getUserByIdFromDb = async (id) => {
   const user = await User.findById(id)
       return user
+}
+
+const getUserByVanIdFromDb = async (vanId) => {
+    try {
+const idToObject = new ObjectId(vanId)
+
+  const user = await User.find({
+    "vans._id": idToObject
+  });
+  if (!user) {
+    return null;
+  }
+  const userId = user[0]._id.toString();
+  return userId;
+ } catch (error) {
+  console.error('Error fetching User ID by Van ID:', error);
+  throw error;
+ }
 }
 
 const getUserByEmailFromDb = async (email) => {
@@ -52,5 +71,6 @@ module.exports = {
   createUserInDb,
   updateUserInDb,
   deleteUserFromDb,
-  updateUserAvatarInDb
+  updateUserAvatarInDb,
+  getUserByVanIdFromDb
 }
