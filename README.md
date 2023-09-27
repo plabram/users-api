@@ -3,9 +3,9 @@
 ![image](https://github.com/plabram/vans-backend/assets/12176574/99575de1-1844-4e8b-85a2-e0239e92fda2)
 
 
-Welcome to the VansBnB webapp! It's bit like AirBnB (but for vans).
+Welcome to VansBnB! It's bit like AirBnB (but for vans).
 
-This repo contains the backend that van owners will use to create an account and publish vans and bookings.
+This repo contains the backend that van owners use to create an account and publish vans and bookings.
 
 https://vans-backend.onrender.com/api/
 
