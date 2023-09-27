@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node .",
     "dev": "node --watch .",
-    "test": "jest"
+    "test": "jest",
+    "build": "echo 'build command'"
   },
   "keywords": [],
   "author": "",
